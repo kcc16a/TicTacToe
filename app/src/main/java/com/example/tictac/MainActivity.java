@@ -1,5 +1,6 @@
 package com.example.tictac;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -38,10 +39,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 buttons[i][j].setOnClickListener(this);
             }
         }
-        Button buttonReset = findViewById(R.id.button_resst);
+        Button buttonReset = findViewById(R.id.button_reset);
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resetGame();
 
             }
         });
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (roundCount == 9) {
             draw();
         }else {
-            player1Turn == !player1Turn;
+            player1Turn = !player1Turn;
         }
     }
     private boolean checkForWin() {
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(int i = 0; i < 3; i++) {
             if (field[i][0].equals(field[i][1])
                 && field[i][0].equals(field[i][2])
-                && !field[i][0].equals(("")) {
+                && !field[i][0].equals(("")) ){
                 return  true;
             }
         }
@@ -95,20 +97,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(int i = 0; i < 3; i++) {
             if (field[0][i].equals(field[1][i])
                     && field[0][i].equals(field[2][i])
-                    && !field[0][i].equals(("")) {
+                    && !field[0][i].equals((""))) {
                 return  true;
             }
         }
 
         if (field[0][0].equals(field[1][1])
                 && field[0][0].equals(field[2][2])
-                && !field[0][0].equals(("")) {
+                && !field[0][0].equals((""))) {
             return  true;
         }
 
         if (field[0][2].equals(field[1][1])
                 && field[0][2].equals(field[2][0])
-                && !field[0][2].equals(("")) {
+                && !field[0][2].equals((""))) {
             return  false;
         }
 
@@ -131,15 +133,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void draw() {
         Toast.makeText(this, "Draw", Toast.LENGTH_SHORT).show();
-        sesetBoard();
+        resetBoard();
     }
 
-    private void uddatePointsText() {
+    private void updatePointsText() {
         textViewPlayer1.setText("PLayer 1: " + player1Points);
         textViewPlayer2.setText("Player 2: " + player2Points);
     }
 
-    private void sesetBoard() {
+    private void resetBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 buttons[i][j].setText("");
@@ -148,5 +150,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         roundCount = 0;
         player1Turn = true;
+    }
+    private void  resetGame() {
+        player1Points = 0;
+        player2Points = 0;
+        updatePointsText();
+        resetBoard();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("roundCount", roundCount);
+        outState.putInt("player1Points", player1Points);
+        outState.putInt("player2Points", player2Points);
+        outState.putBoolean("player1Turn", player1Turn);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        roundCount = savedInstanceState.getInt("roundCount");
+        player1Points = savedInstanceState.getInt("player1Points");
+        player2Points = savedInstanceState.getInt("player2Points");
+        player1Turn = savedInstanceState.getBoolean("player1Turn");
     }
 }
