@@ -3,6 +3,7 @@ package com.example.tictac;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -57,9 +58,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (player1Turn) {
             ((Button) v).setText("X");
+            v.setBackgroundResource(R.drawable.aang0);
         }
         else {
             ((Button) v).setText("O");
+            v.setBackgroundResource(R.drawable.korra0);
         }
 
         roundCount++;
@@ -177,4 +180,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player2Points = savedInstanceState.getInt("player2Points");
         player1Turn = savedInstanceState.getBoolean("player1Turn");
     }
+
+
 }
